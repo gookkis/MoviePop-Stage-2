@@ -1,0 +1,12 @@
+<resources>
+    <array name="desc_sort_by">
+        <item>Most Popular</item>
+        <item>Top Rated</item>
+    </array>
+
+    <array name="value_sort_by">
+        <item>popular</item>
+        <item>top_rated</item>
+    </array>
+
+</resources>

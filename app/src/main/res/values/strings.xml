@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">Movie Pop</string>
+
+    <string name="main_sort_by">Sort by</string>
+    <string name="main_sort_most_popular">Most popular</string>
+    <string name="main_sort_highest_rated">Highest rated</string>
+    <string name="main_sort_favorites">Favorites</string>
+    <string name="generic_error_title">Error</string>
+    <string name="close">Close</string>
+    <string name="watch_trailer">Watch Trailer</string>
+    <string name="user_reviews">User Reviews</string>
+    <string name="remove_from_favorite">Remove Favorite</string>
+    <string name="add_to_favorite">Add Favorite</string>
+
+</resources>
