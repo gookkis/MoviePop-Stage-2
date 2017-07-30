@@ -1,0 +1,4 @@
+build
+app/src/main/java/com/gookkis/moviepop/utils/ApiConst.java
+.idea
+.gradle
