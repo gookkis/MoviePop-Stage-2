@@ -18,4 +18,8 @@ public interface DetailView {
     void showVideos(List<VideoModel> videos);
 
     String getYoutubeUrl(String key);
+
+    void udpateFavDB(int updateCode);
+
+    void onUpdateFailureDB();
 }

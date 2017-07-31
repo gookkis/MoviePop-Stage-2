@@ -12,6 +12,7 @@ import com.gookkis.moviepop.models.Result;
 import com.gookkis.moviepop.utils.Const;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -20,11 +21,11 @@ import butterknife.ButterKnife;
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MovieViewHolder> {
     private Context context;
-    private List<Result> results;
+    private ArrayList<Result> results;
     private int rowLayout;
     private int widthPoster;
 
-    public MovieAdapter(Context context, List<Result> results, int rowLayout, int widthPoster) {
+    public MovieAdapter(Context context, ArrayList<Result> results, int rowLayout, int widthPoster) {
         this.context = context;
         this.results = results;
         this.rowLayout = rowLayout;

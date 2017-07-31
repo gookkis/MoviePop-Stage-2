@@ -4,14 +4,10 @@ package com.gookkis.moviepop.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import io.realm.RealmObject;
-import io.realm.annotations.PrimaryKey;
 
+public class Result implements Parcelable {
 
-public class Result extends RealmObject implements Parcelable {
-    @PrimaryKey
     private long id;
-
     private boolean adult;
     private String backdrop_path;
     private String original_language;
@@ -24,7 +20,17 @@ public class Result extends RealmObject implements Parcelable {
     private boolean video;
     private double vote_average;
     private int vote_count;
-    private boolean favorite;
+
+    public Result(long id, String title, String poster_path, String overview,
+                  double vote_average, String release_date, String backdrop_path) {
+        this.id = id;
+        this.title = title;
+        this.poster_path = poster_path;
+        this.overview = overview;
+        this.vote_average = vote_average;
+        this.release_date = release_date;
+        this.backdrop_path = backdrop_path;
+    }
 
     public boolean isAdult() {
         return adult;
@@ -76,14 +82,6 @@ public class Result extends RealmObject implements Parcelable {
 
     public int getVote_count() {
         return vote_count;
-    }
-
-    public boolean isFavorite() {
-        return favorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        this.favorite = favorite;
     }
 
     public void setId(long id) {
@@ -161,7 +159,6 @@ public class Result extends RealmObject implements Parcelable {
         dest.writeByte(this.video ? (byte) 1 : (byte) 0);
         dest.writeDouble(this.vote_average);
         dest.writeInt(this.vote_count);
-        dest.writeByte(this.favorite ? (byte) 1 : (byte) 0);
     }
 
     protected Result(Parcel in) {
@@ -178,7 +175,6 @@ public class Result extends RealmObject implements Parcelable {
         this.video = in.readByte() != 0;
         this.vote_average = in.readDouble();
         this.vote_count = in.readInt();
-        this.favorite = in.readByte() != 0;
     }
 
     public static final Creator<Result> CREATOR = new Creator<Result>() {

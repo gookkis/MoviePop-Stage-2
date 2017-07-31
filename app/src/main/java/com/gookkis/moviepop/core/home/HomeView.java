@@ -5,8 +5,6 @@ import android.content.Intent;
 import com.gookkis.moviepop.models.BaseListApi;
 import com.gookkis.moviepop.models.Result;
 
-import java.util.List;
-
 
 public interface HomeView {
     void showLoading();
@@ -20,7 +18,5 @@ public interface HomeView {
     void moveToDetails(Intent intent);
 
     void showSort();
-
-    void movieFavorite(List<Result> movieModel);
 
 }

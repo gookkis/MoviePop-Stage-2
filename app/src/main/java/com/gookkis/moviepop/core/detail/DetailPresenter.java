@@ -14,7 +14,6 @@ import com.gookkis.moviepop.utils.DialogFactory;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.schedulers.Schedulers;
-import io.realm.Realm;
 
 public class DetailPresenter {
 
@@ -25,7 +24,6 @@ public class DetailPresenter {
     private BaseListApi<VideoModel> mVideos;
     private CompositeDisposable mCompositeDisposable;
     private RequestAPI requestAPI;
-    Realm mRealm = Realm.getDefaultInstance();
 
     public DetailPresenter(DetailView mView, Context mContext) {
         this.mView = mView;
@@ -86,22 +84,6 @@ public class DetailPresenter {
         mVideos = mVideosModel;
         mView.showVideos(mVideosModel.getResults());
         mView.hideProgress();
-    }
-
-    void updateMovie(Result result, boolean isFavorite) {
-        if (isFavorite)
-            result.setFavorite(!result.isFavorite());
-
-        if (!mRealm.isInTransaction()) {
-            mRealm.beginTransaction();
-        }
-
-        mRealm.copyToRealmOrUpdate(result);
-        mRealm.commitTransaction();
-
-        mMovieData = result;
-
-        mView.showMovie(mMovieData);
     }
 
 

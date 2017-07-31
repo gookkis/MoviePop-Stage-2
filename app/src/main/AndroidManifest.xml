@@ -24,6 +24,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".core.home.HomeActivity" />
         </activity>
+
+        <provider
+            android:name=".db.MoviePopProvider"
+            android:authorities="com.gookkis.moviepop" />
     </application>
 
 

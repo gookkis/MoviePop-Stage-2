@@ -12,14 +12,17 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.gookkis.moviepop.R;
+import com.gookkis.moviepop.db.UpdateFavMovieTask;
 import com.gookkis.moviepop.models.Result;
 import com.gookkis.moviepop.models.ReviewModel;
 import com.gookkis.moviepop.models.VideoModel;
 import com.gookkis.moviepop.utils.Const;
 import com.gookkis.moviepop.utils.DialogFactory;
 import com.gookkis.moviepop.utils.Helpers;
+import com.gookkis.moviepop.utils.SharedPref;
 import com.squareup.picasso.Picasso;
 
 import java.text.ParseException;
@@ -30,6 +33,9 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+
+import static com.gookkis.moviepop.db.UpdateFavMovieTask.ADDED_TO_FAVORITE;
+
 
 public class DetailActivity extends AppCompatActivity implements DetailView {
 
@@ -54,6 +60,7 @@ public class DetailActivity extends AppCompatActivity implements DetailView {
     private ProgressBar mProgressBar = null;
     private String TAG = "DetailAct";
     private Result result;
+    private SharedPref sharedPref;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,11 +75,13 @@ public class DetailActivity extends AppCompatActivity implements DetailView {
     private void initComponent() {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         detailPresenter = new DetailPresenter(this, getApplicationContext());
+        sharedPref = SharedPref.getInstance(getBaseContext());
         if (getIntent() != null) {
             result = getIntent().getParcelableExtra(Const.RESULT);
             detailPresenter.loadMovie(result);
-
         }
+
+
     }
 
 
@@ -122,11 +131,12 @@ public class DetailActivity extends AppCompatActivity implements DetailView {
         tvReleasedDate.setText(formattedDate);
         tvSynopsis.setText(data.getOverview());
 
-        if (data.isFavorite()) {
+        if (sharedPref.getBoolean(data.getId())) {
             tvFavorite.setText(getString(R.string.remove_from_favorite));
         } else {
             tvFavorite.setText(getString(R.string.add_to_favorite));
         }
+
 
         Picasso.with(getApplicationContext()).load(Const.URL_POSTER + data.getPoster_path())
                 .resize(Helpers.getWidthPoster(this) * 2, 0).into(ivPoster);
@@ -186,14 +196,36 @@ public class DetailActivity extends AppCompatActivity implements DetailView {
         return Const.ROOT_VIDEO_KEY + key;
     }
 
+    @Override
+    public void udpateFavDB(int updateCode) {
+        this.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                String infoToast;
+                if (updateCode == ADDED_TO_FAVORITE) {
+                    infoToast = "added to Favorite Movie";
+                    tvFavorite.setText(getString(R.string.remove_from_favorite));
+                    sharedPref.putBoolean(result.getId(), true);
+                } else {
+                    infoToast = "removed from Favorite Movie";
+                    tvFavorite.setText(getString(R.string.add_to_favorite));
+                    sharedPref.putBoolean(result.getId(), false);
+                }
+
+                Toast.makeText(getApplicationContext(), result.getTitle() + " " + infoToast, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    @Override
+    public void onUpdateFailureDB() {
+        Toast.makeText(getApplicationContext(), "Failed add" + result.getTitle() + " to favorites!", Toast.LENGTH_SHORT).show();
+    }
+
     @OnClick(R.id.tv_favorite)
     void onFavoriteClicked() {
-        if (result.isFavorite()) {
-            tvFavorite.setText(getString(R.string.remove_from_favorite));
-        } else {
-            tvFavorite.setText(getString(R.string.add_to_favorite));
-        }
-        detailPresenter.updateMovie(result, true);
+        UpdateFavMovieTask updateFavMovieTask = new UpdateFavMovieTask(getApplicationContext(), result, this);
+        updateFavMovieTask.execute();
     }
 
 

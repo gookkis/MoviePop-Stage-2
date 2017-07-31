@@ -1,12 +1,12 @@
 package com.gookkis.moviepop.models;
 
-import java.util.List;
+import java.util.ArrayList;
 
 public class BaseListApi<T> {
     private int page;
     private int total_pages;
     private long total_results;
-    private List<T> results;
+    private ArrayList<T> results;
     private String status_code;
     private String status_message;
 
@@ -18,7 +18,7 @@ public class BaseListApi<T> {
         return status_message;
     }
 
-    public List<T> getResults() {
+    public ArrayList<T> getResults() {
         return results;
     }
 
